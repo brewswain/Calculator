@@ -18,7 +18,7 @@ body {
 .calculator {
   position: absolute;
   left: 40%;
-  top: 30%;
+  top: 15%;
   border: 1px solid #3a4655;
   background-color: #374352;
   width: 325px;
@@ -75,7 +75,8 @@ body {
   font-size: 3rem;
   background-color: #209cd0;
   border: 1px solid #374352;
-  margin-bottom: 2%;
+  margin-bottom: 3px;
+  margin-top: 2%;
 }
 .calculator-keys .equals:hover {
   background-color: #00b3ff;
