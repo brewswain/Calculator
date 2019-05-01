@@ -4,7 +4,38 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Javascript Calculator</title>
+    <title>Calculator</title>
+    <link rel="stylesheet" type="text/css" href="style/main.css" />
   </head>
-  <body></body>
+  <body>
+    <div class="calculator">
+      <input type="text" class="calculator-display" value="0" disabled />
+
+      <div class="calculator-keys">
+        <input type="button" class="operator" id="addition" value="+" />
+        <input type="button" class="operator" id="subtract" value="-" />
+        <input type="button" class="operator" id="divide" value="÷" />
+        <input type="button" class="operator" id="multiply" value="×" />
+        <input type="button" class="operator" id="percentage" value="%" />
+
+        <input type="button" value="7" /><!--first number row-->
+        <input type="button" value="8" />
+        <input type="button" value="9" />
+
+        <input type="button" value="4" /><!--second number row-->
+        <input type="button" value="5" />
+        <input type="button" value="6" />
+
+        <input type="button" value="1" /><!--third number row-->
+        <input type="button" value="2" />
+        <input type="button" value="3" />
+
+        <input type="button" value="0" />
+        <input type="button" class="decimal" value="." />
+        <input type="button" class="clear" value="C" />
+        <input type="button" class="clear-entry" value="CE" />
+        <input type="button" class="equals" value="=" />
+      </div>
+    </div>
+  </body>
 </html>
