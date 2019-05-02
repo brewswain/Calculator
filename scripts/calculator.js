@@ -5,6 +5,18 @@ const calculator = {
   operator: null
 };
 
+function inputValue(digit) {
+  const { displayValue } = calculator;
+  calculator.displayValue = displayValue === '0' ? digit : displayValue + digit;
+}
+
+function inputDecimal(dot) {
+  if (!calculator.displayValue.includes(dot)) {
+    calculator.displayValue += dot;
+    return;
+  }
+}
+
 function calculatorDisplayUpdate() {
   const display = document.querySelector('.calculator-display');
   display.value = calculator.displayValue;
@@ -25,7 +37,8 @@ keypresses.addEventListener('click', event => {
   }
 
   if (target.classList.contains('decimal')) {
-    console.log('Decimal', target.value);
+    inputDecimal(target.value);
+    calculatorDisplayUpdate();
     return;
   }
 
@@ -44,7 +57,8 @@ keypresses.addEventListener('click', event => {
     return;
   }
 
-  console.log('Digit', target.value);
+  inputValue(target.value);
+  calculatorDisplayUpdate();
 });
 
 let add = (a, b) => a + b;
