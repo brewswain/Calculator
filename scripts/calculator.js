@@ -1,20 +1,81 @@
 const calculator = {
   displayValue: '0',
-  initialOperand: null,
+  firstOperand: null,
   secondOperand: false,
   operator: null
 };
 
 function inputValue(digit) {
-  const { displayValue } = calculator;
-  calculator.displayValue = displayValue === '0' ? digit : displayValue + digit;
+  const { displayValue, waitingForSecondOperand } = calculator;
+
+  if (waitingForSecondOperand === true) {
+    calculator.displayValue = digit;
+    calculator.waitingForSecondOperand = false;
+  } else {
+    calculator.displayValue =
+      displayValue === '0' ? digit : displayValue + digit;
+  }
+
+  console.log(calculator);
 }
 
 function inputDecimal(dot) {
+  if (calculator.waitingForSecondOperand === true) return;
+
   if (!calculator.displayValue.includes(dot)) {
     calculator.displayValue += dot;
+  }
+}
+
+function handleOperator(nextOperator) {
+  const { firstOperand, displayValue, operator } = calculator;
+  const inputValue = parseFloat(displayValue);
+
+  if (operator && calculator.waitingForSecondOperand) {
+    calculator.operator = nextOperator;
+    console.log(calculator);
     return;
   }
+
+  if (firstOperand == null) {
+    calculator.firstOperand = inputValue;
+  } else if (operator) {
+    const currentValue = firstOperand || 0;
+    const result = performCalculation[operator](currentValue, inputValue);
+
+    calculator.displayValue = String(result);
+    calculator.firstOperand = result;
+  }
+
+  calculator.waitingForSecondOperand = true;
+  calculator.operator = nextOperator;
+  console.log(calculator);
+}
+
+const performCalculation = {
+  '÷': (firstOperand, secondOperand) => firstOperand / secondOperand,
+
+  '×': (firstOperand, secondOperand) => firstOperand * secondOperand,
+
+  '+': (firstOperand, secondOperand) => firstOperand + secondOperand,
+
+  '-': (firstOperand, secondOperand) => firstOperand - secondOperand,
+
+  '=': (firstOperand, secondOperand) => secondOperand,
+
+  '%': (firstOperand, secondOperand) => (firstOperand * secondOperand) / 100
+};
+
+function resetCalculator() {
+  calculator.displayValue = '0';
+  calculator.firstOperand = null;
+  calculator.waitingForSecondOperand = false;
+  calculator.operator = null;
+  console.log(calculator);
+}
+
+function clearEntry() {
+  calculator.displayValue = '0';
 }
 
 function calculatorDisplayUpdate() {
@@ -32,7 +93,8 @@ keypresses.addEventListener('click', event => {
   }
 
   if (target.classList.contains('operator')) {
-    console.log('Operator', target.value);
+    handleOperator(target.value);
+    calculatorDisplayUpdate();
     return;
   }
 
@@ -43,29 +105,23 @@ keypresses.addEventListener('click', event => {
   }
 
   if (target.classList.contains('clear')) {
-    console.log('Clear', target.value);
+    resetCalculator();
+    calculatorDisplayUpdate();
     return;
   }
 
   if (target.classList.contains('clear-entry')) {
-    console.log('Clear entry', target.value);
+    clearEntry();
+    calculatorDisplayUpdate();
     return;
   }
 
   if (target.classList.contains('equals')) {
-    console.log('Equals', target.value);
+    handleOperator(target.value);
+    calculatorDisplayUpdate();
     return;
   }
 
   inputValue(target.value);
   calculatorDisplayUpdate();
 });
-
-let add = (a, b) => a + b;
-let subtract = (a, b) => a - b;
-let divide = (a, b) => a / b;
-function multiply(array) {
-  return array.length
-    ? array.reduce((accumulator, nextItem) => accumulator * nextItem)
-    : 0;
-}
